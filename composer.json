@@ -2,7 +2,7 @@
     "name": "php94/cms",
     "title": "内容管理系统",
     "description": "支持自定义字段的内容管理系统",
-    "version": "1.0.1",
+    "version": "1.0.0",
     "license": "GPL-3.0",
     "type": "php94",
     "require": {
