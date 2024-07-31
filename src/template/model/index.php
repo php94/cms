@@ -7,8 +7,8 @@
     <table class="table table-bordered d-table-cell">
         <thead>
             <tr>
-                <th>模型</th>
-                <th>表</th>
+                <th>标题</th>
+                <th>名称</th>
                 <th>管理</th>
             </tr>
         </thead>
