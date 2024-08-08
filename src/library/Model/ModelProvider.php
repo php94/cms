@@ -6,7 +6,7 @@ namespace App\Php94\Cms\Model;
 
 use App\Php94\Cms\Interfaces\ModelInterface;
 use Exception;
-use PHP94\Facade\Event;
+use PHP94\Event;
 
 class ModelProvider
 {

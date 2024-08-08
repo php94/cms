@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace App\Php94\Cms\Http\Content;
 
 use App\Php94\Admin\Http\Common;
-use PHP94\Facade\Db;
-use PHP94\Facade\Template;
-use PHP94\Help\Request;
-use PHP94\Help\Response;
+use PHP94\Db;
+use PHP94\Template;
+use PHP94\Request;
+use PHP94\Response;
 
 class Index extends Common
 {
