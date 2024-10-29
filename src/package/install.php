@@ -1,10 +1,8 @@
 <?php
-
+// 安装脚本文件
 use PHP94\Package;
 
-return [
-    'install' => function () {
-        $sql = <<<'str'
+$sql = <<<'str'
 DROP TABLE IF EXISTS `prefix_php94_cms_model`;
 CREATE TABLE `prefix_php94_cms_model` (
     `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
@@ -31,30 +29,5 @@ CREATE TABLE `prefix_php94_cms_field` (
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='模型字段表';
 str;
-        Package::execSql($sql);
-    },
-    'unInstall' => function () {
-        $stm = Package::querySql('select * from prefix_php94_cms_model');
-        $tables = [];
-        while ($item = $stm->fetch(PDO::FETCH_ASSOC)) {
-            $tables[] = 'DROP TABLE IF EXISTS `prefix_php94_cms_content_' . $item['name'] . '`;';
-        }
-        if ($tables) {
-            Package::execSql(implode('', $tables));
-        }
 
-        $sql = <<<'str'
-DROP TABLE IF EXISTS `prefix_php94_cms_model`;
-DROP TABLE IF EXISTS `prefix_php94_cms_field`;
-str;
-        Package::execSql($sql);
-    },
-    'update' => function (string $oldversion) {
-        $updates = [];
-        foreach ($updates as $version => $fn) {
-            if (version_compare($oldversion, $version, '<')) {
-                $fn();
-            }
-        }
-    },
-];
+Package::execSql($sql);

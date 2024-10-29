@@ -1,5 +1,6 @@
 <?php
 
+use App\Php94\Admin\Model\Menu;
 use App\Php94\Cms\Field\Boolean;
 use App\Php94\Cms\Field\Checkbox;
 use App\Php94\Cms\Field\Code;
@@ -19,8 +20,16 @@ use App\Php94\Cms\Field\WYSIWYG;
 use App\Php94\Cms\Model\BaseModel;
 use App\Php94\Cms\Model\FieldProvider;
 use App\Php94\Cms\Model\ModelProvider;
+use App\Php94\Cms\Http\Content\Index as ContentIndex;
+use App\Php94\Cms\Http\Model\Index as ModelIndex;
 
 return [
+    Menu::class => function (
+        Menu $menu
+    ) {
+        $menu->addMenu('模型管理', ModelIndex::class);
+        $menu->addMenu('内容管理', ContentIndex::class);
+    },
     ModelProvider::class => function (
         ModelProvider $modelProvider
     ) {
