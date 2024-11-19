@@ -20,7 +20,6 @@ use App\Php94\Cms\Field\WYSIWYG;
 use App\Php94\Cms\Model\BaseModel;
 use App\Php94\Cms\Model\FieldProvider;
 use App\Php94\Cms\Model\ModelProvider;
-use App\Php94\Cms\Http\Content\Index as ContentIndex;
 use App\Php94\Cms\Http\Model\Index as ModelIndex;
 
 return [
@@ -28,7 +27,6 @@ return [
         Menu $menu
     ) {
         $menu->addMenu('模型管理', ModelIndex::class);
-        $menu->addMenu('内容管理', ContentIndex::class);
     },
     ModelProvider::class => function (
         ModelProvider $modelProvider

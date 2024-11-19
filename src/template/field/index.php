@@ -28,7 +28,7 @@
             {if !in_array($vo['group'], $groups)}
             <?php $groups[] = $vo['group']; ?>
             <tr>
-                <td colspan="6">
+                <td colspan="7">
                     <span style="font-weight: bold;">{$vo['group']}</span>
                 </td>
             </tr>

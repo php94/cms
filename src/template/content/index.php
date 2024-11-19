@@ -1,22 +1,5 @@
 {include common/header@php94/admin}
-<h1 class="py-3">内容管理</h1>
-
-<div style="display: flex;gap: 10px;margin-bottom: 10px;">
-    <form action="{echo $router->build('/php94/cms/content/index')}" method="GET">
-        <select name="model_id" onchange="this.form.submit();" class="form-select" width="auto">
-            <option value="">请选择内容模型</option>
-            {foreach $models as $vo}
-            {if $request->get('model_id')==$vo['id']}
-            <option selected value="{$vo.id}">{$vo.title}</option>
-            {else}
-            <option value="{$vo.id}">{$vo.title}</option>
-            {/if}
-            {/foreach}
-        </select>
-    </form>
-</div>
-
-{if isset($model)}
+<h1 class="py-3">{$model.title}</h1>
 <form action="{echo $router->build('/php94/cms/content/index')}" onchange="this.submit()">
     <input type="hidden" name="model_id" value="{$model.id}">
     {foreach $request->get('order', []) as $fieldname=>$fieldval}
@@ -228,5 +211,4 @@
     <a class="btn btn-primary {$page<$pages?'':'disabled'}" href="{echo $router->build('/php94/cms/content/index', array_merge($_GET, ['page'=>$pages]))}">末页</a>
     <div>共{$total}条</div>
 </div>
-{/if}
 {include common/footer@php94/admin}
