@@ -25,6 +25,7 @@ CREATE TABLE `prefix_php94_cms_field` (
     `tpl` text NOT NULL COMMENT '后台列表显示模板',
     `priority` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '排序',
     `type` varchar(255) NOT NULL COMMENT '类型',
+    `fieldtype` text NOT NULL COMMENT '字段属性',
     `options` json NOT NULL COMMENT '设置数据',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='模型字段表';

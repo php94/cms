@@ -15,6 +15,7 @@
                 <th>标题</th>
                 <th>字段</th>
                 <th>类型</th>
+                <th>字段属性</th>
                 <th>后台编辑</th>
                 <th>列表显示</th>
                 <th>管理</th>
@@ -28,7 +29,7 @@
             {if !in_array($vo['group'], $groups)}
             <?php $groups[] = $vo['group']; ?>
             <tr>
-                <td colspan="7">
+                <td colspan="8">
                     <span style="font-weight: bold;">{$vo['group']}</span>
                 </td>
             </tr>
@@ -48,6 +49,9 @@
                     {else}
                     类型<code>{$sub['type']}</code>不存在
                     {/if}
+                </td>
+                <td>
+                    <span>{$sub.fieldtype}</span>
                 </td>
                 <td>
                     {if $sub['editable']}

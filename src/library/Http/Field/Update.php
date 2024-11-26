@@ -33,6 +33,7 @@ class Update extends Common
             (new Text('标题', 'title', $field['title']))->setHelp('例如：客户电话'),
             (new Text('字段名称', 'name', $field['name']))->setDisabled(),
             (new Text('表单类型', 'type', $field['type']::getTitle()))->setDisabled(),
+            (new Text('字段类型', 'fieldtype', $field['fieldtype']))->setRequired(),
         );
         $field['type']::onUpdateFieldForm($form, $field);
         $form->addItem(

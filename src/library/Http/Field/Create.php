@@ -79,6 +79,7 @@ class Create extends Common
             'editable' => Request::post('editable', 1),
             'show' => Request::post('show', 0),
             'tpl' => Request::post('tpl', ''),
+            'fieldtype' => Request::post('fieldtype', ''),
         ];
         $data['options'] = json_encode(array_diff_key(Request::post(), $data), JSON_UNESCAPED_UNICODE);
 
