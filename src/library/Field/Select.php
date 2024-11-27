@@ -66,14 +66,18 @@ class Select implements FieldInterface
         $content[$field['name']] = Request::post($field['name'], 0);
     }
 
-    public static function getFilterForm(array $field): string
+    public static function getFilterTpl(): string
     {
-        $select = new SelectLevel($field['title'], 'filter[' . $field['name'] . ']', Request::get('filter.' . $field['name']));
-        foreach (array_filter(explode(PHP_EOL, $field['items'])) as $vo) {
-            $tmp = explode('|', trim($vo) . '||||');
-            $select->addItem($tmp[0], $tmp[1], $tmp[2], $tmp[4], $tmp[3] ? true : false);
-        }
-        return str_replace('<label class="form-label">' . $field['title'] . '</label>', '', $select . '');
+        return <<<'str'
+<?php
+$select = new \PHP94\Form\Field\SelectLevel($field['title'], 'filter[' . $field['name'] . ']', \PHP94\Request::get('filter.' . $field['name']));
+foreach (array_filter(explode(PHP_EOL, $field['items'])) as $vo) {
+    $tmp = explode('|', trim($vo) . '||||');
+    $select->addItem($tmp[0], $tmp[1], $tmp[2], $tmp[4], $tmp[3] ? true : false);
+}
+echo str_replace('<label class="form-label">' . $field['title'] . '</label>', '', $select . '');
+?>
+str;
     }
 
     public static function onFilter(array &$where, array $field)
@@ -111,21 +115,21 @@ class Select implements FieldInterface
         }
     }
 
-    public static function getShow($field, $content): string
+    public static function getShowTpl(): string
     {
-
-        if (!isset($content[$field['name']])) {
-            return '';
+        return <<<'str'
+<?php
+if (isset($content[$field['name']])) {
+    $value = $content[$field['name']];
+    foreach (array_filter(explode(PHP_EOL, $field['items'])) as $vo) {
+        $tmp = explode('|', trim($vo) . '|');
+        if ($tmp[1] == $value) {
+            return $tmp[0];
         }
-        $value = $content[$field['name']];
-
-        foreach (array_filter(explode(PHP_EOL, $field['items'])) as $vo) {
-            $tmp = explode('|', trim($vo) . '|');
-            if ($tmp[1] == $value) {
-                return $tmp[0];
-            }
-        }
-
-        return $value;
+    }
+    echo $value;
+}
+?>
+str;
     }
 }

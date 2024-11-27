@@ -23,13 +23,9 @@ class Pics implements FieldInterface
         return 'json';
     }
 
-    public static function onCreateFieldForm(Form $form)
-    {
-    }
+    public static function onCreateFieldForm(Form $form) {}
 
-    public static function onUpdateFieldForm(Form $form, array $field)
-    {
-    }
+    public static function onUpdateFieldForm(Form $form, array $field) {}
 
     public static function onCreateContentForm(Form $form, array $field)
     {
@@ -72,18 +68,19 @@ class Pics implements FieldInterface
         );
     }
 
-    public static function getFilterForm(array $field): ?string
+    public static function getFilterTpl(): string
     {
         return '';
     }
 
-    public static function onFilter(array &$where, array $field)
-    {
-    }
+    public static function onFilter(array &$where, array $field) {}
 
-    public static function getShow($field, $content): string
+    public static function getShowTpl(): string
     {
-        $tpl = <<<'str'
+        return <<<'str'
+<?php
+$items = is_null($content[$field['name']]) ? [] : json_decode($content[$field['name']], true);
+?>
 <div style="display: flex;flex-direction: wrap;flex-wrap: wrap;gap: 5px;">
 {foreach $items as $vo}
 <div>
@@ -92,9 +89,5 @@ class Pics implements FieldInterface
 {/foreach}
 </div>
 str;
-        return Template::renderString($tpl, [
-            'field' => $field,
-            'items' => is_null($content[$field['name']]) ? [] : json_decode($content[$field['name']], true),
-        ]);
     }
 }

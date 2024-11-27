@@ -17,18 +17,14 @@ class WYSIWYG implements FieldInterface
         return '富文本编辑器';
     }
 
-    public static function onCreateFieldForm(Form $form)
-    {
-    }
+    public static function onCreateFieldForm(Form $form) {}
 
     public static function getFieldType(): string
     {
         return 'text';
     }
 
-    public static function onUpdateFieldForm(Form $form, array $field)
-    {
-    }
+    public static function onUpdateFieldForm(Form $form, array $field) {}
 
     public static function onCreateContentForm(Form $form, array $field)
     {
@@ -57,7 +53,7 @@ class WYSIWYG implements FieldInterface
         $content[$field['name']] = Request::post($field['name']);
     }
 
-    public static function getFilterForm(array $field): ?string
+    public static function getFilterTpl(): string
     {
         return '';
     }
@@ -70,8 +66,10 @@ class WYSIWYG implements FieldInterface
         }
     }
 
-    public static function getShow($field, $content): string
+    public static function getShowTpl(): string
     {
-        return $content[$field['name']] ?? '';
+        return <<<'str'
+{echo $content[$field['name']]}
+str;
     }
 }

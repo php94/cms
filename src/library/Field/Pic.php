@@ -17,18 +17,14 @@ class Pic implements FieldInterface
         return '单图';
     }
 
-    public static function onCreateFieldForm(Form $form)
-    {
-    }
+    public static function onCreateFieldForm(Form $form) {}
 
     public static function getFieldType(): string
     {
         return 'varchar(255) NOT NULL DEFAULT \'\'';
     }
 
-    public static function onUpdateFieldForm(Form $form, array $field)
-    {
-    }
+    public static function onUpdateFieldForm(Form $form, array $field) {}
 
     public static function onCreateContentForm(Form $form, array $field)
     {
@@ -47,7 +43,7 @@ class Pic implements FieldInterface
     public static function onUpdateContentForm(Form $form, array $field, array $content)
     {
         $form->addItem(
-            (new Picture($field['title'], $field['name'], $content[$field['name']] ??''))
+            (new Picture($field['title'], $field['name'], $content[$field['name']] ?? ''))
                 ->setUploadUrl(Router::build('/php94/admin/tool/upload'))
                 ->setHelp($field['help'] ?? '')
         );
@@ -58,21 +54,21 @@ class Pic implements FieldInterface
         $content[$field['name']] = Request::post($field['name']);
     }
 
-    public static function getFilterForm(array $field): ?string
+    public static function getFilterTpl(): string
     {
         return '';
     }
 
-    public static function onFilter(array &$where, array $field)
-    {
-    }
+    public static function onFilter(array &$where, array $field) {}
 
-    public static function getShow($field, $content): string
+    public static function getShowTpl(): string
     {
-        if (isset($content[$field['name']]) && strlen($content[$field['name']])) {
-            return '<img src="' . $content[$field['name']] . '" alt="" width="60" height="60">';
-        } else {
-            return '';
-        }
+        return <<<'str'
+<?php
+if (isset($content[$field['name']]) && strlen($content[$field['name']])) {
+    echo '<img src="' . $content[$field['name']] . '" alt="" width="60" height="60">';
+}
+?>
+str;
     }
 }

@@ -7,7 +7,6 @@ namespace App\Php94\Cms\Field;
 use App\Php94\Cms\Interfaces\FieldInterface;
 use PHP94\Request;
 use PHP94\Router;
-use PHP94\Template;
 use PHP94\Form\Field\Files as FieldFiles;
 use PHP94\Form\Form;
 
@@ -23,13 +22,9 @@ class Files implements FieldInterface
         return 'json';
     }
 
-    public static function onCreateFieldForm(Form $form)
-    {
-    }
+    public static function onCreateFieldForm(Form $form) {}
 
-    public static function onUpdateFieldForm(Form $form, array $field)
-    {
-    }
+    public static function onUpdateFieldForm(Form $form, array $field) {}
 
     public static function onCreateContentForm(Form $form, array $field)
     {
@@ -71,18 +66,19 @@ class Files implements FieldInterface
         );
     }
 
-    public static function getFilterForm(array $field): ?string
+    public static function getFilterTpl(): string
     {
         return '';
     }
 
-    public static function onFilter(array &$where, array $field)
-    {
-    }
+    public static function onFilter(array &$where, array $field) {}
 
-    public static function getShow($field, $content): string
+    public static function getShowTpl(): string
     {
-        $tpl = <<<'str'
+        return <<<'str'
+<?php
+$items=is_null($content[$field['name']]) ? [] : json_decode($content[$field['name']], true);
+?>
 <div>
 {foreach $items as $vo}
 <div>
@@ -91,9 +87,5 @@ class Files implements FieldInterface
 {/foreach}
 </div>
 str;
-        return Template::renderString($tpl, [
-            'field' => $field,
-            'items' => is_null($content[$field['name']]) ? [] : json_decode($content[$field['name']], true),
-        ]);
     }
 }

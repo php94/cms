@@ -18,18 +18,14 @@ class Time implements FieldInterface
         return '时间';
     }
 
-    public static function onCreateFieldForm(Form $form)
-    {
-    }
+    public static function onCreateFieldForm(Form $form) {}
 
     public static function getFieldType(): string
     {
         return 'time';
     }
 
-    public static function onUpdateFieldForm(Form $form, array $field)
-    {
-    }
+    public static function onUpdateFieldForm(Form $form, array $field) {}
 
     public static function onCreateContentForm(Form $form, array $field)
     {
@@ -55,9 +51,9 @@ class Time implements FieldInterface
         $content[$field['name']] = Request::post($field['name']);
     }
 
-    public static function getFilterForm(array $field): ?string
+    public static function getFilterTpl(): string
     {
-        $tpl = <<<'str'
+        return <<<'str'
 <div style="display: flex;flex-direction: column;gap: 5px;">
 <div>
     <input type="time" class="form-control" name="filter[{$field['name']}][min]" value="{$request->get('filter.'.$field['name'].'.min')}">
@@ -67,9 +63,6 @@ class Time implements FieldInterface
 </div>
 </div>
 str;
-        return Template::renderString($tpl, [
-            'field' => $field
-        ]);
     }
 
     public static function onFilter(array &$where, array $field)
@@ -85,8 +78,10 @@ str;
         }
     }
 
-    public static function getShow($field, $content): string
+    public static function getShowTpl(): string
     {
-        return $content[$field['name']] ?? '';
+        return <<<'str'
+{$content[$field['name']]}
+str;
     }
 }

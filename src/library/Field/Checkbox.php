@@ -6,7 +6,6 @@ namespace App\Php94\Cms\Field;
 
 use App\Php94\Cms\Interfaces\FieldInterface;
 use PHP94\Request;
-use PHP94\Template;
 use PHP94\Form\Field\Checkbox as FieldCheckbox;
 use PHP94\Form\Field\Checkboxs;
 use PHP94\Form\Field\Radio;
@@ -80,11 +79,24 @@ class Checkbox implements FieldInterface
         $content[$field['name']] = json_encode(Request::post($field['name'], []), JSON_UNESCAPED_UNICODE);
     }
 
-    public static function getFilterForm(array $field): ?string
+    public static function getFilterTpl(): string
     {
-        switch ($field['filtertype']) {
-            case '0':
-                $tpl = <<<'str'
+        return <<<'str'
+<?php
+$items = [];
+foreach (array_filter(explode(PHP_EOL, $field['items'])) as $vo) {
+    $tmp = explode('|', trim($vo) . '||||');
+    $items[] = [
+        'title' => $tmp[0],
+        'value' => $tmp[1],
+        'parent' => $tmp[2],
+        'disabled' => $tmp[3] ? true : false,
+        'group' => $tmp[4],
+    ];
+}
+?>
+{switch $field['filtertype']}
+{case '0'}
 <div>
 <input type="radio" style="display: none;" name="filter[{$field.name}]" value="{$request->get('filter.'.$field['name'])}" checked>
 {foreach $items as $vo}
@@ -101,12 +113,9 @@ class Checkbox implements FieldInterface
 {/if}
 {/foreach}
 </div>
-str;
-                break;
-
-            case '1':
-            case '2':
-                $tpl = <<<'str'
+{/case}
+{case '1'}
+{case '2'}
 <div>
 {foreach $items as $vo}
 {if in_array($vo['value'], (array)$request->get('filter.'.$field['name']))}
@@ -122,29 +131,11 @@ str;
 {/if}
 {/foreach}
 </div>
+{/case}
+{default}
+{/default}
+{/switch}
 str;
-                break;
-
-            default:
-                $tpl = '';
-                break;
-        }
-
-        $items = [];
-        foreach (array_filter(explode(PHP_EOL, $field['items'])) as $vo) {
-            $tmp = explode('|', trim($vo) . '||||');
-            $items[] = [
-                'title' => $tmp[0],
-                'value' => $tmp[1],
-                'parent' => $tmp[2],
-                'disabled' => $tmp[3] ? true : false,
-                'group' => $tmp[4],
-            ];
-        }
-        return Template::renderString($tpl, [
-            'field' => $field,
-            'items' => $items,
-        ]);
     }
 
     public static function onFilter(array &$where, array $field)
@@ -178,20 +169,24 @@ str;
         }
     }
 
-    public static function getShow($field, $content): string
+    public static function getShowTpl(): string
     {
-        if (!isset($content[$field['name']])) {
-            return '';
+        return <<<'str'
+<?php
+if (!isset($content[$field['name']])) {
+    echo '';
+}else{
+    $values = is_null($content[$field['name']]) ? [] : json_decode($content[$field['name']], true);
+    $selected = [];
+    foreach (array_filter(explode("\r\n", $field['items'])) as $vo) {
+        $tmp = explode('|', trim($vo) . '|');
+        if (in_array($tmp[1], $values)) {
+            $selected[] = $tmp[0];
         }
-        $values = is_null($content[$field['name']]) ? [] : json_decode($content[$field['name']], true);
-        $selected = [];
-        foreach (array_filter(explode("\r\n", $field['items'])) as $vo) {
-            $tmp = explode('|', trim($vo) . '|');
-            if (in_array($tmp[1], $values)) {
-                $selected[] = $tmp[0];
-            }
-        }
-
-        return implode(',', $selected);
+    }
+    echo implode(',', $selected);
+}
+?>
+str;
     }
 }

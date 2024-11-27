@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace App\Php94\Cms\Field;
 
 use App\Php94\Cms\Interfaces\FieldInterface;
-use PHP94\Form\Field\Text;
 use PHP94\Request;
-use PHP94\Template;
 use PHP94\Form\Field\Date as FieldDate;
 use PHP94\Form\Form;
 
@@ -23,13 +21,9 @@ class Date implements FieldInterface
         return 'date';
     }
 
-    public static function onCreateFieldForm(Form $form)
-    {
-    }
+    public static function onCreateFieldForm(Form $form) {}
 
-    public static function onUpdateFieldForm(Form $form, array $field)
-    {
-    }
+    public static function onUpdateFieldForm(Form $form, array $field) {}
 
     public static function onCreateContentForm(Form $form, array $field)
     {
@@ -55,9 +49,9 @@ class Date implements FieldInterface
         $content[$field['name']] = Request::post($field['name']);
     }
 
-    public static function getFilterForm(array $field): ?string
+    public static function getFilterTpl(): string
     {
-        $tpl = <<<'str'
+        return <<<'str'
 <div style="display: flex;flex-direction: column;gap: 5px;">
 <div>
     <input type="date" class="form-control" name="filter[{$field['name']}][min]" value="{$request->get('filter.'.$field['name'].'.min')}">
@@ -67,9 +61,6 @@ class Date implements FieldInterface
 </div>
 </div>
 str;
-        return Template::renderString($tpl, [
-            'field' => $field
-        ]);
     }
 
     public static function onFilter(array &$where, array $field)
@@ -85,8 +76,10 @@ str;
         }
     }
 
-    public static function getShow($field, $content): string
+    public static function getShowTpl(): string
     {
-        return $content[$field['name']] ?? '';
+        return <<<'str'
+{$content[$field['name']] ?? ''}
+str;
     }
 }

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Php94\Cms\Field;
 
 use App\Php94\Cms\Interfaces\FieldInterface;
-use PHP94\Template;
 use PHP94\Request;
 use PHP94\Form\Field\Radio;
 use PHP94\Form\Field\Radios;
@@ -23,13 +22,9 @@ class Boolean implements FieldInterface
         return 'tinyint(3) unsigned';
     }
 
-    public static function onCreateFieldForm(Form $form)
-    {
-    }
+    public static function onCreateFieldForm(Form $form) {}
 
-    public static function onUpdateFieldForm(Form $form, array $field)
-    {
-    }
+    public static function onUpdateFieldForm(Form $form, array $field) {}
 
     public static function onCreateContentForm(Form $form, array $field)
     {
@@ -63,9 +58,9 @@ class Boolean implements FieldInterface
         $content[$field['name']] = Request::post($field['name']) ? true : false;
     }
 
-    public static function getFilterForm(array $field): ?string
+    public static function getFilterTpl(): string
     {
-        $tpl = <<<'str'
+        return <<<'str'
 <input type="radio" style="display: none;" name="filter[{$field.name}]" value="{$request->get('filter.'.$field['name'], '')}" checked>
 {if $request->get('filter.'.$field['name'], '') == 1}
 <label>
@@ -90,9 +85,6 @@ class Boolean implements FieldInterface
 </label>
 {/if}
 str;
-        return Template::renderString($tpl, [
-            'field' => $field
-        ]);
     }
 
     public static function onFilter(array &$where, array $field)
@@ -107,14 +99,10 @@ str;
         }
     }
 
-    public static function getShow($field, $content): string
+    public static function getShowTpl(): string
     {
-        if ($content[$field['name']] == 1) {
-            return '是';
-        } elseif ($content[$field['name']] == 0) {
-            return '否';
-        } else {
-            return '';
-        }
+        return <<<'str'
+{if $content[$field['name']]}是{else}否{/if}
+str;
     }
 }

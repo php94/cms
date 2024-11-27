@@ -21,13 +21,9 @@ class Code implements FieldInterface
         return 'text';
     }
 
-    public static function onCreateFieldForm(Form $form)
-    {
-    }
+    public static function onCreateFieldForm(Form $form) {}
 
-    public static function onUpdateFieldForm(Form $form, array $field)
-    {
-    }
+    public static function onUpdateFieldForm(Form $form, array $field) {}
 
     public static function onCreateContentForm(Form $form, array $field)
     {
@@ -55,7 +51,7 @@ class Code implements FieldInterface
         $content[$field['name']] = Request::post($field['name']);
     }
 
-    public static function getFilterForm(array $field): ?string
+    public static function getFilterTpl(): string
     {
         return '';
     }
@@ -68,8 +64,10 @@ class Code implements FieldInterface
         }
     }
 
-    public static function getShow($field, $content): string
+    public static function getShowTpl(): string
     {
-        return '<pre>' . $content[$field['name']] . '</pre>';
+        return <<<'str'
+<pre>{$content[$field['name']]}</pre>
+str;
     }
 }

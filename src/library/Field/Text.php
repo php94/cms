@@ -16,18 +16,14 @@ class Text implements FieldInterface
         return '单行文本';
     }
 
-    public static function onCreateFieldForm(Form $form)
-    {
-    }
+    public static function onCreateFieldForm(Form $form) {}
 
     public static function getFieldType(): string
     {
         return 'varchar(255) NOT NULL DEFAULT \'\'';
     }
 
-    public static function onUpdateFieldForm(Form $form, array $field)
-    {
-    }
+    public static function onUpdateFieldForm(Form $form, array $field) {}
 
     public static function onCreateContentForm(Form $form, array $field)
     {
@@ -44,7 +40,7 @@ class Text implements FieldInterface
     public static function onUpdateContentForm(Form $form, array $field, array $content)
     {
         $form->addItem(
-            (new FieldText($field['title'], $field['name'], $content[$field['name']]?? ''))
+            (new FieldText($field['title'], $field['name'], $content[$field['name']] ?? ''))
                 ->setHelp($field['help'] ?? '')
         );
     }
@@ -54,7 +50,7 @@ class Text implements FieldInterface
         $content[$field['name']] = Request::post($field['name']);
     }
 
-    public static function getFilterForm(array $field): ?string
+    public static function getFilterTpl(): string
     {
         return '';
     }
@@ -67,8 +63,10 @@ class Text implements FieldInterface
         }
     }
 
-    public static function getShow($field, $content): string
+    public static function getShowTpl(): string
     {
-        return $content[$field['name']] ?? '';
+        return <<<'str'
+{$content[$field['name']]}
+str;
     }
 }

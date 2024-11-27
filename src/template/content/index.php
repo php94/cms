@@ -9,12 +9,11 @@
     {/foreach}
     <div style="display: flex;flex-direction: row;flex-wrap: wrap;gap: 10px;">
         {foreach $fields as $field}
-        {if $tmp = $field['type']::getFilterForm($field)}
+        <?php $tpl = $field['type']::getFilterTpl(); ?>
+        {if strlen($tpl)}
         <div class="d-flex flex-column gap-1">
             <div>{$field['title']}:</div>
-            <div>
-                {echo $tmp}
-            </div>
+            <div>{echo $template->renderString($tpl, ['field'=>$field])}</div>
         </div>
         {/if}
         {/foreach}
@@ -120,10 +119,10 @@
                 {foreach $fields as $field}
                 {if $field['show']}
                 <td>
-                    {if $field['tpl']}
+                    {if strlen($field['tpl'])}
                     {echo $template->renderString($field['tpl'], ['field'=>$field, 'content'=>$content])}
                     {else}
-                    {echo $field['type']::getShow($field, $content)}
+                    {echo $template->renderString($field['type']::getShowTpl(), ['field'=>$field, 'content'=>$content])}
                     {/if}
                 </td>
                 {/if}
@@ -142,10 +141,10 @@
                         {foreach $fields as $field}
                         <dt>{$field.title}</dt>
                         <dd>
-                            {if $field['tpl']}
+                            {if strlen($field['tpl'])}
                             {echo $template->renderString($field['tpl'], ['field'=>$field, 'content'=>$content])}
                             {else}
-                            {echo $field['type']::getShow($field, $content)}
+                            {echo $template->renderString($field['type']::getShowTpl(), ['field'=>$field, 'content'=>$content])}
                             {/if}
                         </dd>
                         {/foreach}

@@ -6,7 +6,6 @@ namespace App\Php94\Cms\Field;
 
 use PHP94\Request;
 use PHP94\Router;
-
 use App\Php94\Cms\Interfaces\FieldInterface;
 use PHP94\Form\Field\SimpleMDE;
 use PHP94\Form\Form;
@@ -23,13 +22,9 @@ class Markdown implements FieldInterface
         return 'text';
     }
 
-    public static function onCreateFieldForm(Form $form)
-    {
-    }
+    public static function onCreateFieldForm(Form $form) {}
 
-    public static function onUpdateFieldForm(Form $form, array $field)
-    {
-    }
+    public static function onUpdateFieldForm(Form $form, array $field) {}
 
     public static function onCreateContentForm(Form $form, array $field)
     {
@@ -59,7 +54,7 @@ class Markdown implements FieldInterface
         $content[$field['name']] = Request::post($field['name']);
     }
 
-    public static function getFilterForm(array $field): ?string
+    public static function getFilterTpl(): string
     {
         return '';
     }
@@ -72,9 +67,11 @@ class Markdown implements FieldInterface
         }
     }
 
-    public static function getShow($field, $content): string
+    public static function getShowTpl(): string
     {
         // todo..
-        return '<pre>' . $content[$field['name']] . '</pre>';
+        return <<<'str'
+<pre>{$content[$field['name']]}</pre>
+str;
     }
 }

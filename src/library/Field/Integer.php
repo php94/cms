@@ -7,7 +7,6 @@ namespace App\Php94\Cms\Field;
 use App\Php94\Cms\Interfaces\FieldInterface;
 use PHP94\Form\Field\Text;
 use PHP94\Request;
-use PHP94\Template;
 use PHP94\Form\Field\Number;
 use PHP94\Form\Form;
 
@@ -83,9 +82,9 @@ class Integer implements FieldInterface
         $content[$field['name']] = Request::post($field['name']);
     }
 
-    public static function getFilterForm(array $field): ?string
+    public static function getFilterTpl(): string
     {
-        $tpl = <<<'str'
+        return <<<'str'
 <div style="display: flex;flex-direction: column;gap: 5px;">
     <div>
         <input type="number" step="1" class="form-control" name="filter[{$field['name']}][min]" value="{$request->get('filter.'.$field['name'].'.min')}">
@@ -95,9 +94,6 @@ class Integer implements FieldInterface
     </div>
 </div>
 str;
-        return Template::renderString($tpl, [
-            'field' => $field
-        ]);
     }
 
     public static function onFilter(array &$where, array $field)
@@ -113,8 +109,10 @@ str;
         }
     }
 
-    public static function getShow($field, $content): string
+    public static function getShowTpl(): string
     {
-        return $content[$field['name']];
+        return <<<'str'
+{$content[$field['name']]}
+str;
     }
 }
