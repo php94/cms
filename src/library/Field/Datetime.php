@@ -41,7 +41,7 @@ class Datetime implements FieldInterface
     public static function onUpdateContentForm(Form $form, array $field, array $content)
     {
         $form->addItem(
-            (new FieldDatetime($field['title'], $field['name'], $field['default'] ?? ''))
+            (new FieldDatetime($field['title'], $field['name'], $content[$field['name']] ?? ''))
                 ->setHelp($field['help'] ?? '')
         );
     }
